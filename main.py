@@ -109,22 +109,22 @@ for category, content in MENU_STRUCTURE.items():
     if content["items"]:
         for page, module_name in content["items"].items():
             st.sidebar.button(
-                page, 
-                key=f"btn_{category}_{page}", 
-                on_click=handle_page_selection, 
+                page,
+                key=f"btn_{category}_{page}",
+                on_click=handle_page_selection,
                 args=(category, page, module_name)
             )
 
-    # 加载选中的模块
-    if st.session_state.current_module:
-        try:
-            st.session_state.is_sub_module = True
-            if st.session_state.current_module not in sys.modules:
-                module = importlib.import_module(st.session_state.current_module)
-            else:
-                module = sys.modules[st.session_state.current_module]
-                importlib.reload(module)
-            if hasattr(module, 'main'):
-                module.main()
-        except Exception as e:
-            st.error(f"加载模块 {st.session_state.current_module} 时发生错误: {str(e)}") 
+# 加载选中的模块
+if st.session_state.current_module:
+    try:
+        st.session_state.is_sub_module = True
+        if st.session_state.current_module not in sys.modules:
+            module = importlib.import_module(st.session_state.current_module)
+        else:
+            module = sys.modules[st.session_state.current_module]
+            importlib.reload(module)
+        if hasattr(module, 'main'):
+            module.main()
+    except Exception as e:
+        st.error(f"加载模块 {st.session_state.current_module} 时发生错误: {str(e)}") 
