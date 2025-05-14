@@ -12,13 +12,11 @@ st.markdown("""
 <style>
     .main-header {
         font-size: 2.5rem;
-        color: #2c3e50;
+        color: #000000;
         text-align: center;
         margin-bottom: 1rem;
         font-weight: bold;
-        background: linear-gradient(to right, #4CAF50 0%, #2196F3 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-family: 'SimHei', sans-serif;
     }
     .metric-card {
         background-color: white;
@@ -126,12 +124,19 @@ def main():
             
             st.plotly_chart(fig, use_container_width=True, key="traffic_trend")
             
-            # 拥堵指数降幅对比
-            df_2023 = df[df['date'].dt.year == 2023]['congestion_index'].mean()
-            df_2025 = df[df['date'].dt.year == 2025]['congestion_index'].mean()
-            reduction = (df_2023 - df_2025) / df_2023 * 100
+            # Calculate reduction using the latest available year
+            latest_year = df['date'].dt.year.max()
+            # Define the year for comparison (e.g., the year before AI implementation)
+            comparison_year = 2023 # Or choose another relevant year like 2022
             
-            st.info(f"通过AI优化红绿灯配时，拥堵指数从2023年的平均{df_2023:.2f}降至2025年的{df_2025:.2f}，降幅达{reduction:.1f}%。")
+            comparison_year_avg = df[df['date'].dt.year == comparison_year]['congestion_index'].mean()
+            latest_year_avg = df[df['date'].dt.year == latest_year]['congestion_index'].mean()
+            
+            if pd.notna(comparison_year_avg) and pd.notna(latest_year_avg) and comparison_year_avg != 0:
+                reduction = (comparison_year_avg - latest_year_avg) / comparison_year_avg * 100
+                st.info(f"通过AI优化红绿灯配时，拥堵指数从{comparison_year}年的平均{comparison_year_avg:.2f}降至{latest_year}年的{latest_year_avg:.2f}，降幅达{reduction:.1f}%。")
+            else:
+                st.info(f"无法计算拥堵指数降幅（{comparison_year}年或{latest_year}年数据不足）。")
             
             # 按年度统计平均拥堵指数
             yearly_congestion = df.groupby('year')['congestion_index'].mean().reset_index()
@@ -189,11 +194,17 @@ def main():
             col1, col2 = st.columns(2)
             
             with col1:
-                # 事故响应时间对比
-                response_reduction = (df[df['date'].dt.year == 2022]['response_time'].mean() - 
-                                      df[df['date'].dt.year == 2025]['response_time'].mean())
+                # Calculate reduction using the latest available year
+                latest_year = df['date'].dt.year.max()
+                traditional_year = 2022 # Year for traditional system comparison
+                traditional_avg_response = df[df['date'].dt.year == traditional_year]['response_time'].mean()
+                latest_avg_response = df[df['date'].dt.year == latest_year]['response_time'].mean()
                 
-                st.info(f"事故响应时间从传统系统下的平均{df[df['date'].dt.year == 2022]['response_time'].mean():.2f}分钟缩短至AI系统下的{df[df['date'].dt.year == 2025]['response_time'].mean():.2f}分钟，缩短了{response_reduction:.2f}分钟。")
+                if pd.notna(traditional_avg_response) and pd.notna(latest_avg_response):
+                    response_reduction_val = traditional_avg_response - latest_avg_response
+                    st.info(f"事故响应时间从传统系统({traditional_year}年)下的平均{traditional_avg_response:.2f}分钟缩短至AI系统({latest_year}年)下的{latest_avg_response:.2f}分钟，缩短了{response_reduction_val:.2f}分钟。")
+                else:
+                    st.info(f"无法计算事故响应时间缩短量（{traditional_year}年或{latest_year}年数据不足）。")
                 
                 # 事故率分析
                 fig = px.line(df,
@@ -279,29 +290,34 @@ def main():
         with tab4:
             st.subheader("AI交通系统核心优势")
             
+            # Determine the latest available year in the data
+            latest_year = df['date'].dt.year.max()
+            # Define the year for the traditional system comparison
+            traditional_year = 2022 # Keep this as 2022 based on original logic
+            
             # 创建关键指标比较表格
             ai_advantage_data = {
                 "指标": ["平均拥堵指数", "事故响应时间", "交通事故率", "红绿灯等待时间", "拥堵反应时间"],
-                "传统系统 (2022)": [
-                    f"{df[df['date'].dt.year == 2022]['congestion_index'].mean():.2f}",
-                    f"{df[df['date'].dt.year == 2022]['response_time'].mean():.2f}分钟",
-                    f"{df[df['date'].dt.year == 2022]['accident_rate'].mean():.2f}",
-                    f"{df[df['date'].dt.year == 2022]['wait_time'].mean():.1f}秒",
-                    f"{df[df['date'].dt.year == 2022]['reaction_time'].mean():.2f}小时"
+                f"传统系统 ({traditional_year})": [ # Use f-string for year
+                    f"{df[df['date'].dt.year == traditional_year]['congestion_index'].mean():.2f}",
+                    f"{df[df['date'].dt.year == traditional_year]['response_time'].mean():.2f}分钟",
+                    f"{df[df['date'].dt.year == traditional_year]['accident_rate'].mean():.2f}",
+                    f"{df[df['date'].dt.year == traditional_year]['wait_time'].mean():.1f}秒",
+                    f"{df[df['date'].dt.year == traditional_year]['reaction_time'].mean():.2f}小时"
                 ],
-                "AI系统 (2025)": [
-                    f"{df[df['date'].dt.year == 2025]['congestion_index'].mean():.2f}",
-                    f"{df[df['date'].dt.year == 2025]['response_time'].mean():.2f}分钟",
-                    f"{df[df['date'].dt.year == 2025]['accident_rate'].mean():.2f}",
-                    f"{df[df['date'].dt.year == 2025]['wait_time'].mean():.1f}秒",
-                    f"{df[df['date'].dt.year == 2025]['reaction_time'].mean():.2f}小时"
+                f"AI系统 ({latest_year})": [ # Use latest_year and f-string
+                    f"{df[df['date'].dt.year == latest_year]['congestion_index'].mean():.2f}",
+                    f"{df[df['date'].dt.year == latest_year]['response_time'].mean():.2f}分钟",
+                    f"{df[df['date'].dt.year == latest_year]['accident_rate'].mean():.2f}",
+                    f"{df[df['date'].dt.year == latest_year]['wait_time'].mean():.1f}秒",
+                    f"{df[df['date'].dt.year == latest_year]['reaction_time'].mean():.2f}小时"
                 ],
                 "改善幅度": [
-                    f"{(df[df['date'].dt.year == 2022]['congestion_index'].mean() - df[df['date'].dt.year == 2025]['congestion_index'].mean()) / df[df['date'].dt.year == 2022]['congestion_index'].mean() * 100:.1f}%",
-                    f"{(df[df['date'].dt.year == 2022]['response_time'].mean() - df[df['date'].dt.year == 2025]['response_time'].mean()) / df[df['date'].dt.year == 2022]['response_time'].mean() * 100:.1f}%",
-                    f"{(df[df['date'].dt.year == 2022]['accident_rate'].mean() - df[df['date'].dt.year == 2025]['accident_rate'].mean()) / df[df['date'].dt.year == 2022]['accident_rate'].mean() * 100:.1f}%",
-                    f"{(df[df['date'].dt.year == 2022]['wait_time'].mean() - df[df['date'].dt.year == 2025]['wait_time'].mean()) / df[df['date'].dt.year == 2022]['wait_time'].mean() * 100:.1f}%",
-                    f"{(df[df['date'].dt.year == 2022]['reaction_time'].mean() - df[df['date'].dt.year == 2025]['reaction_time'].mean()) / df[df['date'].dt.year == 2022]['reaction_time'].mean() * 100:.1f}%"
+                    f"{(df[df['date'].dt.year == traditional_year]['congestion_index'].mean() - df[df['date'].dt.year == latest_year]['congestion_index'].mean()) / df[df['date'].dt.year == traditional_year]['congestion_index'].mean() * 100:.1f}%",
+                    f"{(df[df['date'].dt.year == traditional_year]['response_time'].mean() - df[df['date'].dt.year == latest_year]['response_time'].mean()) / df[df['date'].dt.year == traditional_year]['response_time'].mean() * 100:.1f}%",
+                    f"{(df[df['date'].dt.year == traditional_year]['accident_rate'].mean() - df[df['date'].dt.year == latest_year]['accident_rate'].mean()) / df[df['date'].dt.year == traditional_year]['accident_rate'].mean() * 100:.1f}%",
+                    f"{(df[df['date'].dt.year == traditional_year]['wait_time'].mean() - df[df['date'].dt.year == latest_year]['wait_time'].mean()) / df[df['date'].dt.year == traditional_year]['wait_time'].mean() * 100:.1f}%",
+                    f"{(df[df['date'].dt.year == traditional_year]['reaction_time'].mean() - df[df['date'].dt.year == latest_year]['reaction_time'].mean()) / df[df['date'].dt.year == traditional_year]['reaction_time'].mean() * 100:.1f}%"
                 ]
             }
             
@@ -359,47 +375,9 @@ def main():
                 
                 st.plotly_chart(fig, use_container_width=True, key="bad_weather_comparison")
 
-        # 分析结论
-        st.markdown("""
-        ### AI交通管理系统核心优势分析
+      
 
-        #### 1. 自适应交通信号优化
-        - 通过AI优化红绿灯配时，2025年主城区高峰拥堵指数较2023年下降16.5%
-        - 红绿灯等待时间平均减少45%，极大提高了道路通行效率
-        - 系统能根据实时交通流量智能调整，减少不必要的等待时间
-
-        #### 2. 智能应急响应系统
-        - 事故响应时间从传统系统的平均7.5分钟缩短至2025年的3分钟以内
-        - 智能预警系统可提前预测潜在事故风险点，提高救援精准度
-        - 应急资源调配更加高效，大幅减少二次事故发生率
-
-        #### 3. 突发事件处理能力显著提升
-        - 大型活动或突发事件期间，拥堵指数比传统系统降低68%
-        - 对交通拥堵的反应时间从传统系统的1.5小时缩短至0.3小时
-        - 在恶劣天气条件下仍能保持较高的交通疏导效率
-
-        #### 4. 季节性拥堵智能应对
-        - 传统系统在春节、开学季等特殊时期拥堵加剧
-        - AI系统能提前预测季节性交通需求变化，动态调整信号配时
-        - 高峰期平均通行时间减少约25分钟，大幅提高市民出行体验
-
-        #### 5. 社会经济效益显著
-        - 年均减少交通拥堵造成的经济损失约12亿元
-        - 因事故率下降，每年降低社会医疗和财产损失约5.8亿元
-        - 平均通勤时间缩短提高劳动生产率，创造间接经济效益
-
-        #### 6. 未来发展趋势
-        - AI交通管理系统将与车路协同技术深度融合
-        - 预计2026年城市主干道将实现全智能动态调控
-        - 未来将与自动驾驶、智慧城市管理平台进一步协同
-        """)
-
-        # 页脚
-        st.markdown("""
-        <div style='text-align: center; color: #666; padding: 20px;'>
-            数据来源：交通管理部门统计数据 | 更新时间：2024年
-        </div>
-        """, unsafe_allow_html=True)
+    
     else:
         st.error("无法加载数据，请确保data/traffic_data.csv文件存在")
 

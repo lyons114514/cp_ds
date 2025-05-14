@@ -110,12 +110,12 @@ with col4:
 st.markdown("---")
 
 # --- 创建选项卡 ---
-tab_safety, tab_delivery, tab_agri, tab_kitchen, tab_summary = st.tabs([
+tab_safety, tab_delivery, tab_agri, tab_kitchen = st.tabs([
     "🛡️ 食品安全 (Safety)",
     "🚀 便捷配送 (Convenience)",
     "🌿 智慧农业 (Efficiency)",
     "🍳 智能厨房 (Convenience)",
-    "💡 总结洞察 (Summary)"
+ 
 ])
 
 # --- Tab 1: 食品安全 ---
@@ -262,28 +262,3 @@ with tab_kitchen:
     *   **互联互通**: 作为智能家居的一部分，实现厨房电器的互联和智能控制。
     """)
 
-# --- Tab 5: 总结洞察 ---
-with tab_summary:
-    st.subheader("AI在食品领域的赋能总结：聚焦安全、便捷与效率")
-
-    st.markdown("""
-    人工智能正在深刻地改变着食品产业的各个环节，其核心价值体现在提升**食品安全**保障水平、增加消费**便捷性**以及优化生产和流通**效率**。
-
-    **1. 保障食品安全 (Safety):**
-    *   **数据驱动的风险防控:** AI虽然不直接参与检测（目前主流仍是传统检测技术），但其强大的 **数据分析能力** 是关键。通过整合分析溯源数据、流通数据、消费反馈、舆情信息等，AI能有效 **预测潜在风险**、**提升食源性疾病预警准确率** (提升约 `{latest_data_food['Disease_Warning_Improvement']}%`)，并辅助 **精准监管**。
-    *   **透明度提升:** 区块链等技术保证了数据的不可篡改，结合AI分析，提升了从农田到餐桌的 **透明度**，增强了消费者信心 (信任指数提升至 `{latest_data_food['Consumer_Trust_Index']:.1f}`)。
-
-    **2. 提升消费便捷性 (Convenience):**
-    *   **极致的即时配送:** 外卖和即时零售的繁荣离不开 **AI智能调度系统**。该系统实时优化配送路径，显著 **缩短配送时间** (平均缩短 `{latest_data_food['Avg_Delivery_Time_Reduction']}%`)，提升用户体验。无人配送是AI在末端配送便捷性上的未来探索方向。
-    *   **智能化的家庭厨房:** 智能冰箱利用 **图像识别** 管理食材、**AI推荐** 健康食谱；烹饪机器人则致力于实现 **自动化烹饪**，解放用户双手，提升居家烹饪的便捷度和趣味性 (智能冰箱渗透率达 `{latest_data_food['Smart_Fridge_Penetration']}%`)。
-
-    **3. 优化生产与流通效率 (Efficiency):**
-    *   **智慧农业精准高效:** 在农业生产端，AI视觉技术用于 **病虫害精准识别** (准确率 `{latest_data_food['Pest_Detection_Accuracy']}%`)，结合传感器数据分析实现 **精准水肥管理** (节水率 `{latest_data_food['Water_Saving_Rate']}%`)，提升资源利用效率和作物产量。自动化采摘等技术也在逐步发展。
-    *   **供应链优化:** AI也可应用于食品供应链管理，通过 **需求预测** 减少库存浪费，优化 **物流网络** 降低运输成本。
-
-    **总结:** AI并非万能药，但在食品领域，它正扮演着越来越重要的 **"赋能者"** 角色。通过与物联网、大数据、机器人等技术结合，AI有效解决了食品安全中的信息不对称问题，提升了即时消费的便捷性，并推动了农业生产和食品流通的效率革命。未来，随着技术的进一步成熟，AI将在个性化营养、新型食品研发、可持续农业等方面带来更多创新。
-    """)
-
-# --- 页脚 ---
-st.markdown("---")
-st.markdown("<div style='text-align: center; color: #888;'>数据来源: 模拟数据，基于行业公开信息与发展趋势 | 更新时间: 2024年</div>", unsafe_allow_html=True)

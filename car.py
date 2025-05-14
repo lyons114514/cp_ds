@@ -82,12 +82,12 @@ def main():
     st.markdown("<h1 class='main-header'>新能源汽车市场分析</h1>", unsafe_allow_html=True)
 
     # 创建五个标签页
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4 = st.tabs([
         "📈 销量趋势分析",
         "🥧 市场份额分布",
         "🚘 智能座舱分析",
         "🌍 区域数据分析",
-        "🔋 电池系统优化"
+    
     ])
 
     # Tab 1: 销量趋势分析
@@ -209,7 +209,7 @@ def main():
         """)
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # Tab 4: 区域数据分析
+
     with tab4:
         st.markdown("<h2 class='sub-header'>区域数据分析</h2>", unsafe_allow_html=True)
         
@@ -281,14 +281,8 @@ def main():
             hide_index=True
         )
 
-    # Tab 5: 电池系统优化
-    with tab5:
-        st.markdown("<h2 class='sub-header'>电池系统优化</h2>", unsafe_allow_html=True)
-        st.markdown("电池系统优化内容待完善...")
-
-    # 页脚
-    st.markdown("---")
-    st.markdown("<div style='text-align: center; color: #888;'>数据来源：中国汽车工业协会、EV Sales、Bloomberg NEF | 更新时间：2024年3月</div>", unsafe_allow_html=True)
-
+  
+    
+  
 if __name__ == "__main__":
     main()

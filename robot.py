@@ -96,7 +96,7 @@ with tab1:
         yaxis_range=[0, 100]
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="ai_capabilities_chart")
     
     st.markdown(f"""
     **主要发现：**
@@ -121,7 +121,7 @@ with tab2:
     # 更新布局
     fig_pie.update_traces(textposition='inside', textinfo='percent+label')
     
-    st.plotly_chart(fig_pie, use_container_width=True)
+    st.plotly_chart(fig_pie, use_container_width=True, key="market_share_pie_chart")
     
     st.markdown(f"""
     **市场分布特点：**
@@ -150,7 +150,7 @@ with tab3:
         xaxis_range=[0, 100]
     )
     
-    st.plotly_chart(fig_bar, use_container_width=True)
+    st.plotly_chart(fig_bar, use_container_width=True, key="ai_adoption_bar_chart")
     
     st.markdown(f"""
     **AI普及率分析：**
@@ -159,6 +159,3 @@ with tab3:
     * 即使是普及率最低的其他领域也达到了{ai_adoption['AI功能普及率'].min():.1f}%，显示AI技术已经广泛渗透到服务机器人领域
     """)
 
-# 页脚
-st.markdown("---")
-st.markdown("<div style='text-align: center; color: #888;'>数据来源：中国机器人产业创新中心，中国电子学会 | 更新时间：2024年</div>", unsafe_allow_html=True)

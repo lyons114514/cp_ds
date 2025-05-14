@@ -1,0 +1,8 @@
+Year,Method,Accuracy
+2021,Intensive fine-tuning,39.0
+2022,No fine-tuning,60.0
+2022,Intensive fine-tuning,68.0
+2023,No fine-tuning,89.0
+2023,Intensive fine-tuning,85.0
+2024,No fine-tuning,96.0
+2024,Intensive fine-tuning,91.1

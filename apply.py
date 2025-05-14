@@ -249,8 +249,6 @@ def main():
         """)
 
 # 页脚
-st.markdown("---")
-st.markdown("数据来源：IDC中国与艾瑞咨询联合发布的《2023中国AI应用场景研究报告》| 更新时间：2024年3月")
 
 if __name__ == "__main__":
     main()

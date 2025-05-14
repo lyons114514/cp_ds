@@ -1,0 +1,11 @@
+年份,模型,驾驶得分
+2022,"TCP-ctrl*",30.47
+2022,"TCP*",40.70
+2022,"TCP-traj w/o distillation",49.30
+2022,"TCP-traj*",59.90
+2023,"AD-MLP",18.05
+2023,"UniAD-Tiny",40.73
+2023,"VAD",42.35
+2023,"UniAD-Base",45.81
+2023,"ThinkTwice*",62.44
+2023,"DriveAdapter*",64.22 

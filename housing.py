@@ -438,21 +438,6 @@ def main():
         fig_compliance.update_layout(title='数据安全合规产品占比提升趋势 (目标90%)', yaxis_title='%', yaxis_range=[0, 100], hovermode="x unified")
         st.plotly_chart(fig_compliance, use_container_width=True, key="compliance_trend")
 
-        st.markdown("---")
-        st.subheader("总结：AI重塑智慧生活")
-        st.markdown("""
-        综合来看，AI技术正以前所未有的深度和广度渗透到中国人的居住环境中：
-        *   **家居层面**：从被动响应转向主动服务，实现更个性化、节能、便捷的居住体验。
-        *   **社区层面**：提升了安全管理水平和公共服务效率，构建更安全、高效、便利的社区环境。
-        *   **建筑层面**：推动了能源管理的精细化和可再生能源的普及，助力建筑行业低碳转型。
-
-        在政策引导和技术创新的双重驱动下，中国智慧生活领域正从"功能化"加速迈向真正的"智慧化"，AI是这场变革的核心引擎。
-        """)
-
-
-    # --- 页脚 ---
-    st.markdown("---")
-    st.markdown("<div style='text-align: center; color: var(--secondary-color); font-size: 0.85em;'>数据来源: 根据用户提供信息整理 | 更新时间: 2024年</div>", unsafe_allow_html=True)
-
+      
 if __name__ == "__main__":
     main()
